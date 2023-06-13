@@ -1,6 +1,8 @@
 <?php
 
 require('api/flight/Flight.php');
+require_once("config/server.php");
+require_once("config/db.php");
 require_once("controller/IndexController.php");
 
 session_start();
@@ -16,11 +18,13 @@ Flight::route("GET /", function() {
 
 Flight::route("POST /login", function() {
     if (!isset($_POST["email"])) {
-        Flight::halt(400, "Email is required");
+        $_SESSION["invalidCredentials"] = true;
+        require_once("public/html/login.php");
     }
 
     if (!isset($_POST["password"])) {
-        Flight::halt(400, "Password is required");
+        $_SESSION["invalidCredentials"] = true;
+        require_once("public/html/login.php");
     }
 
     $email = $_POST["email"];
@@ -29,6 +33,11 @@ Flight::route("POST /login", function() {
     $index = new IndexController();
 
     $index->login($email, $password);
+});
+
+Flight::route("GET /logout", function() {
+    $index = new IndexController();
+    $index->logout();
 });
 
 Flight::start();

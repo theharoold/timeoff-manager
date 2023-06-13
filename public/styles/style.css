@@ -44,6 +44,23 @@ header hr, footer hr {
     font-size: 36px;
 }
 
+.header-logo-img:hover {
+    animation: rotateAnimation 1s linear 1;
+}
+
+@keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+      animation-timing-function: ease-in-out;
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
 .header-logo-text {
     padding-left: 12px;
     padding-top: 6px;
@@ -121,3 +138,71 @@ main {
     background-color: var(--background);
     border: 1px solid gray;
 }
+
+.header-logo-link {
+    text-decoration: none;
+}
+
+.invalid-credentials-text {
+    color: red;
+}
+
+.invalid-credentials-input {
+    border: 1px solid red;
+}
+
+.logout-button {
+    border: 1px solid gray;
+    background: var(--background);
+    padding: 5px;
+}
+
+.logout-button-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: gray;
+}
+
+.header-links-toggle {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .header-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-links-toggle {
+        display: block;
+        padding: 12px 16px;
+        cursor: pointer;
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text);
+        background-color: var(--background);
+        border: 2px solid gray;
+    }
+
+    .header-small-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    .header-div {
+        flex-direction: column;
+        padding-right: 20px;
+    }
+
+    .header-links div {
+        padding: 10px 0 10px 20px;
+    }
+
+    .header-links button {
+        margin: 10px 0 10px 20px;
+    }
+}
+

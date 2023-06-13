@@ -1,6 +1,5 @@
 <?php 
 
-session_start();
 $isLoggedIn = isset($_SESSION["isLoggedIn"]);
 if (!$isLoggedIn) {
     header("Location: public/html/login.php");

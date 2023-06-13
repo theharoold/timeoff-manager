@@ -22,11 +22,11 @@
                 Please log in to proceed.
             </p>
             <br>
-            <form class="login-form">
-                <label for="email">Email:</label><br>
-                <input name="email" type="email" id="email"/><br>
-                <label for="password">Password:</label><br>
-                <input name="password" type="password" id="password"/><br>
+            <form class="login-form" method="POST" action="<?= getFullServerPath() . "/login"; ?>">
+                <label for="email" class="<?= isset($_SESSION["invalidCredentials"]) ? "invalid-credentials-text" : "" ?>">Email:</label><br>
+                <input name="email" type="email" id="email" class="<?= isset($_SESSION["invalidCredentials"]) ? "invalid-credentials-input" : "" ?>"/><br>
+                <label for="password" class="<?= isset($_SESSION["invalidCredentials"]) ? "invalid-credentials-text" : "" ?>">Password:</label><br>
+                <input name="password" type="password" id="password" class="<?= isset($_SESSION["invalidCredentials"]) ? "invalid-credentials-input" : "" ?>"/><br>
                 <button class="login-button" type="submit">Log in</button><br>
             </form>
         </div>
