@@ -13,7 +13,7 @@ if (!$isLoggedIn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | STOM | Simple Time-Off Manager</title>
+    <title>Profile | STOM | Simple Time-Off Manager</title>
     <?php
     include("includes.html");
     ?>
@@ -25,7 +25,9 @@ if (!$isLoggedIn) {
 
     <main>
         <div class="main-div">
-            Dashboard
+            Profile
+
+            <button onclick="changeTheme();">Change theme</button>
         </div>
     </main>
 

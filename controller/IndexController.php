@@ -10,26 +10,19 @@ class IndexController {
     }
 
     public function login($email, $password) {
-        $hash = hash("sha256", $password);
-        
-        $db = new DB();
-        $conn = $db->createInstance();
+        $userDAO = new UserDAO();
+        $results = $userDAO->getUserByEmailPassword($email, $password);
 
-        $select_query = "SELECT * FROM employees WHERE email = :email AND password = :password";
-
-        $stmt = $conn->prepare($select_query);
-        $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":password", $hash);
-        $stmt->execute();
-
-        $results = $stmt->fetch();
-        if (count($results) == 0) {
+        if (!$results) {
             // Invalid login credentials
             $_SESSION["invalidCredentials"] = true;
+            $_SESSION["invalidMessage"] = "Invalid login credentials.";
             require_once("public/html/login.php");
 
         } else {
+            unset($_SESSION["invalidMessage"]);
             unset($_SESSION["invalidCredentials"]);
+            $_SESSION["user"] = $results;
             if ($results["is_manager"] == 1) {
                 $_SESSION["isManager"] = true;
             }
@@ -44,6 +37,14 @@ class IndexController {
     public function logout() {
         session_unset();
         require_once("public/html/login.php");
+    }
+
+    public function profile($isLoggedIn) {
+        if ($isLoggedIn) {
+            require("public/html/profile.php");
+        } else {
+            require("public/html/login.php");
+        }
     }
 }
 

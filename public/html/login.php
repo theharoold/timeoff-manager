@@ -21,6 +21,9 @@
             <p>
                 Please log in to proceed.
             </p>
+            <p>
+                <?= isset($_SESSION["invalidMessage"]) ? "<span style='color:red;padding-top: 20px;'>" . $_SESSION["invalidMessage"] . "</span>" : "" ?>
+            </p>
             <br>
             <form class="login-form" method="POST" action="<?= getFullServerPath() . "/login"; ?>">
                 <label for="email" class="<?= isset($_SESSION["invalidCredentials"]) ? "invalid-credentials-text" : "" ?>">Email:</label><br>

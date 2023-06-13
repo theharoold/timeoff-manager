@@ -23,14 +23,14 @@
                 $isLoggedIn = isset($_SESSION["isLoggedIn"]);
                 if ($isLoggedIn) { 
             ?>
-                <div><a href="#" class="header-link-a active-link">Dashboard</a></div>
-                <div><a href="#" class="header-link-a inactive-link">Requests</a></div>
-                <div><a href="#" class="header-link-a inactive-link">Profile</a></div>
+                <div><a href="<?= getFullServerPath() . "/" ?>" class="header-link-a <?= $_SESSION["active-page"] == "dashboard" ? "" : "in" ?>active-link">Dashboard</a></div>
+                <div><a href="<?= getFullServerPath() . "/requests" ?>" class="header-link-a <?= $_SESSION["active-page"] == "requests" ? "" : "in" ?>active-link">Requests</a></div>
+                <div><a href="<?= getFullServerPath() . "/profile" ?>" class="header-link-a <?= $_SESSION["active-page"] == "profile" ? "" : "in" ?>active-link">Profile</a></div>
                 <?php
                     $isManager = isset($_SESSION["isManager"]);
                     if ($isManager) {
                         ?> 
-                        <div><a href="#" class="header-link-a inactive-link">Admin</a></div>
+                        <div><a href="<?= getFullServerPath() . "/admin" ?>" class="header-link-a <?= $_SESSION["active-page"] == "admin" ? "" : "in" ?>active-link">Admin</a></div>
                         <?php
                     }
                 }

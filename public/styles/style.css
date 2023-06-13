@@ -1,5 +1,6 @@
 html, body {
     margin: 0;
+    background-color: var(--background);
 }
 
 body {
@@ -18,6 +19,7 @@ body {
 }
 
 .header-div {
+    background-color: var(--background);
     display: flex;
     flex-direction: row;
     padding: 15px 0px;
@@ -67,6 +69,11 @@ header hr, footer hr {
     cursor: pointer;
     font-size: 24px;
     font-weight: bold;
+    color: var(--text);
+}
+
+.header-logo-link {
+    color: var(--text);
 }
 
 .header-links {
@@ -137,6 +144,7 @@ main {
     color: var(--text);
     background-color: var(--background);
     border: 1px solid gray;
+    cursor: pointer;
 }
 
 .header-logo-link {
