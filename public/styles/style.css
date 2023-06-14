@@ -182,6 +182,14 @@ main {
     margin-bottom: 20px;
 }
 
+.description-textarea {
+    background-color: var(--background);
+    color: var(--text);
+    margin-bottom: 20px;
+    font-family: Arial;
+    width: 100%;
+}
+
 .login-form {
     min-width: 300px;
 }

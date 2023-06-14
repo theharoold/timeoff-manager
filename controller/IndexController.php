@@ -141,6 +141,33 @@ class IndexController {
 
         require_once("public/html/admin.php");
     }
+
+    public function requests($isLoggedIn) {
+        if (!$isLoggedIn) {
+            require_once("public/html/login.php");
+            exit();
+        }
+
+        $_SESSION["active-page"] = "requests";
+
+        require_once("public/html/requests.php");
+    }
+
+    public function createRequest($formData) {
+        $requestDAO = new RequestDAO();
+
+        $result = $requestDAO->createRequest($formData);
+
+        if ($result > 0) {
+            $_SESSION["create-request-message"] = "Request successfully created.";
+            $_SESSION["create-request-class"] = "success-message";
+        } else {
+            $_SESSION["create-request-message"] = "Unable to create request. Please try again later.";
+            $_SESSION["create-request-class"] = "error-message";
+        }
+
+        require_once("public/html/requests.php");
+    }
 }
 
 ?>

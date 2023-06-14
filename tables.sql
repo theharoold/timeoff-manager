@@ -23,6 +23,7 @@ CREATE TABLE addresses (
 CREATE TABLE requests (
     id INT PRIMARY KEY AUTO_INCREMENT,
     employee_id INT NOT NULL,
+    description VARCHAR(300),
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     create_time DATETIME NOT NULL,
@@ -30,7 +31,7 @@ CREATE TABLE requests (
 );
 
 CREATE TABLE request_statuses (
-    request_id INT,
+    request_id INT PRIMARY KEY,
     manager_id INT,
     updated_on DATETIME,
     status VARCHAR(20) DEFAULT 'PROCESSING',

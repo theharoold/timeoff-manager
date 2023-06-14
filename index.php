@@ -4,6 +4,7 @@ require('api/flight/Flight.php');
 require_once("config/server.php");
 require_once("config/db.php");
 require_once("model/userDAO.php");
+require_once("model/requestDAO.php");
 require_once("controller/IndexController.php");
 
 session_start();
@@ -144,6 +145,39 @@ Flight::route("POST /create-account", function() {
 
     $index = new IndexController();
     $index->createAccount($formData);
+});
+
+Flight::route("GET /requests", function() {
+    unset($_SESSION["create-request-message"]);
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    $index = new IndexController();
+
+    $index->requests($isLoggedIn);
+});
+
+Flight::route("POST /requests", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    if ($_POST["start_date"] == "" || $_POST["end_date"] == "") {
+        $_SESSION["create-request-message"] = "Start and end date fields are required.";
+        $_SESSION["create-request-class"] = "error-message";
+        require_once("public/html/requests.php");
+        exit();
+    }
+
+    $formData = array();
+    $formData["start_date"] = $_POST["start_date"];
+    $formData["end_date"] = $_POST["end_date"];
+    $formData["description"] = ($_POST["description"] == "") ? "/" : $_POST["description"];
+
+    $index = new IndexController();
+    $index->createRequest($formData);
+
 });
 
 Flight::start();
