@@ -53,6 +53,50 @@ Flight::route("GET /profile", function() {
     $index->profile($isLoggedIn);
 });
 
+Flight::route("POST /profile", function() {
+    $_SESSION["active-page"] = "profile";
+    $index = new IndexController();
+    $formData = $_POST;
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    $index->updateProfile($isLoggedIn, $formData);
+});
+
+Flight::route("POST /change-password", function() {
+    $index = new IndexController();
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    $old_password = $_POST["old_password"];
+    $new_password = $_POST["new_password"];
+    $repeat_new_password = $_POST["repeat_new_password"];
+
+    if ($_POST["old_password"] == "" || $_POST["new_password"] == "" || $_POST["repeat_new_password"] == "") {
+        $_SESSION["change-password-message"] = "All fields are required.";
+        $_SESSION["change-password-class"] = "error-message";
+        require_once("public/html/profile.php");
+        exit();
+    }
+
+    if ($new_password != $repeat_new_password) {
+        $_SESSION["change-password-message"] = "Passwords do not match.";
+        $_SESSION["change-password-class"] = "error-message";
+        require_once("public/html/profile.php");
+        exit();
+    }
+
+    if (hash("sha256", $old_password) != $_SESSION["user"]["password"]) {
+        $_SESSION["change-password-message"] = "Invalid password.";
+        $_SESSION["change-password-class"] = "error-message";
+        require_once("public/html/profile.php");
+        exit();
+    }
+
+    $index->changePassword($_SESSION["user"]["id"], $new_password);
+});
+
 Flight::start();
 
 ?>

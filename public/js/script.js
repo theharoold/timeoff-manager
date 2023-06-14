@@ -7,6 +7,9 @@ const toggleNavbar = () => {
     }
 }
 
+const darkColor = "rgb(26, 26, 65)";
+const lightColor = "rgb(238, 238, 238)"
+
 let text = localStorage.getItem("text");
 let background = localStorage.getItem("background");
 let r = document.querySelector(':root');
@@ -17,10 +20,10 @@ if (text != null && background != null) {
     r.style.setProperty("--text", text);
     r.style.setProperty("--background", background);
 } else {
-    localStorage.setItem("text", "black");
-    localStorage.setItem("background", "white");
-    r.style.setProperty("--text", "black");
-    r.style.setProperty("--background", "white");
+    localStorage.setItem("text", darkColor);
+    localStorage.setItem("background", lightColor);
+    r.style.setProperty("--text", darkColor);
+    r.style.setProperty("--background", lightColor);
 }
 
 setInterval(() => {
@@ -38,18 +41,18 @@ const changeTheme = (theme) => {
     let backgroundValue = rs.getPropertyValue('--background');
 
     if (theme == "dark") {
-        r.style.setProperty("--text", "white");
-        textValue = "white";
+        textValue = lightColor;
+        r.style.setProperty("--text", textValue);
         localStorage.setItem("text", textValue);
-        r.style.setProperty("--background", "black");
-        backgroundValue = "black";
+        backgroundValue = darkColor;
+        r.style.setProperty("--background", backgroundValue);
         localStorage.setItem("background", backgroundValue);
     } else if (theme == "light") {
-        r.style.setProperty("--text", "black");
-        textValue = "black";
+        textValue = darkColor;
+        r.style.setProperty("--text", textValue);
         localStorage.setItem("text", textValue);
-        r.style.setProperty("--background", "white");
-        backgroundValue = "white";
+        backgroundValue = lightColor;
+        r.style.setProperty("--background", backgroundValue);
         localStorage.setItem("background", backgroundValue);
     }
 };
