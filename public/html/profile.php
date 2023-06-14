@@ -30,26 +30,26 @@ if (!$isLoggedIn) {
             
             <form class="profile-form" action="<?= getFullServerPath() . "/profile" ?>" method="POST">
                 <div>
-                    <label>Email:</label><br>
+                    <label for="email">Email:</label><br>
                     <input class="" type="email" name="email" placeholder="<?= $_SESSION["user"]["email"] ?>"/><br>
-                    <label>First Name:</label><br>
+                    <label for="fname">First Name:</label><br>
                     <input class="" type="text" name="fname" placeholder="<?= $_SESSION["user"]["fname"] ?>"/><br>
-                    <label>Last Name:</label><br>
+                    <label for="lname">Last Name:</label><br>
                     <input class="" type="text" name="lname" placeholder="<?= $_SESSION["user"]["lname"] ?>"/><br>
-                    <label>Phone:</label><br>
+                    <label for="phone">Phone:</label><br>
                     <input class="" type="text" name="phone" placeholder="<?= $_SESSION["user"]["phone"] ?>"/><br>
-                    <label>Job Title:</label><br>
+                    <label for="job_title">Job Title:</label><br>
                     <input class="" type="text" name="job_title" placeholder="<?= $_SESSION["user"]["job_title"] ?>"/><br>
                 </div>
                 <div>
-                    <label>Address:</label><br>
-                    <input class="" type="text" name="address" placeholder="<?= $_SESSION["user_address"]["address"] ?>"/><br>
-                    <label>City:</label><br>
-                    <input class="" type="text" name="zip_code" placeholder="<?= $_SESSION["user_address"]["zip_code"] ?>"/><br>
-                    <label>Zip Code:</label><br>
-                    <input class="" type="text" name="city" placeholder="<?= $_SESSION["user_address"]["city"] ?>"/><br>
-                    <label>Country:</label><br>
-                    <input class="" type="text" name="country" placeholder="<?= $_SESSION["user_address"]["country"] ?>"/><br>
+                    <label for="address">Address:</label><br>
+                    <input class="" type="text" name="address" placeholder="<?= isset($_SESSION["user_address"]) ? $_SESSION["user_address"]["address"] : "" ?>"/><br>
+                    <label for="zip_code">Zip Code:</label><br>
+                    <input class="" type="text" name="zip_code" placeholder="<?= isset($_SESSION["user_address"]) ? $_SESSION["user_address"]["zip_code"] : "" ?>"/><br>
+                    <label for="city">City:</label><br>
+                    <input class="" type="text" name="city" placeholder="<?= isset($_SESSION["user_address"]) ? $_SESSION["user_address"]["city"] : "" ?>"/><br>
+                    <label for="country">Country:</label><br>
+                    <input class="" type="text" name="country" placeholder="<?= isset($_SESSION["user_address"]) ? $_SESSION["user_address"]["country"] : "" ?>"/><br>
                     <label>Theme:</label><br>
                     <div class="theme-div">
                         <p class="theme-control-left" onclick="changeTheme('dark');">Dark</p>
@@ -63,11 +63,11 @@ if (!$isLoggedIn) {
             <?= (isset($_SESSION["change-password-message"])) ? "<p class='message-div " . $_SESSION["change-password-class"] . "'><span class='message-text'>" . $_SESSION['change-password-message'] . "</span></p>" : ""; ?>
             <form class="profile-form" action="<?= getFullServerPath() . "/change-password" ?>" method="POST">
                 <div>
-                    <label>Old Password:</label>
+                    <label for="old_password">Old Password:</label>
                     <input type="password" name="old_password" />
-                    <label>New Password:</label>
+                    <label for="new_password">New Password:</label>
                     <input type="password" name="new_password" />
-                    <label>Repeat New Password:</label>
+                    <label for="repeat_new_password">Repeat New Password:</label>
                     <input type="password" name="repeat_new_password" />
                     <button type="submit">Change Password</button>
                 </div>

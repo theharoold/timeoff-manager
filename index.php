@@ -97,6 +97,55 @@ Flight::route("POST /change-password", function() {
     $index->changePassword($_SESSION["user"]["id"], $new_password);
 });
 
+Flight::route("GET /admin", function() {
+    if (!isset($_SESSION["isLoggedIn"])) {
+        require_once("public/html/login.php");
+        exit();
+    }
+    if ($_SESSION["user"]["is_manager"] != 1) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    unset($_SESSION["create-account-message"]);
+
+    $_SESSION["active-page"] = "admin";
+    require_once("public/html/admin.php");
+});
+
+Flight::route("POST /create-account", function() {
+    if (!isset($_SESSION["isLoggedIn"])) {
+        require_once("public/html/login.php");
+        exit();
+    }
+    if ($_SESSION["user"]["is_manager"] != 1) {
+        require_once("public/html/dashboard.php");
+        exit();
+    }
+
+    $_SESSION["active-page"] = "admin";
+
+    if ($_POST["email"] == "" || $_POST["password"] == "" || $_POST["fname"] == "" || $_POST["lname"] == "" || $_POST["job_title"] == "") {
+        $_SESSION["create-account-message"] = "All fields are required.";
+        $_SESSION["create-account-class"] = "error-message";
+        require_once("public/html/admin.php");
+        exit();
+    }
+
+    
+    $formData = array();
+    $formData["email"] = $_POST["email"];
+    $formData["password"] = hash("sha256", $_POST["password"]);
+    $formData["fname"] = $_POST["fname"];
+    $formData["lname"] = $_POST["lname"];
+    $formData["job_title"] = $_POST["job_title"];
+    $formData["is_manager"] = isset($_POST["is_manager"]) ? 1 : 0;
+    $formData["plaintext"] = $_POST["password"];
+
+    $index = new IndexController();
+    $index->createAccount($formData);
+});
+
 Flight::start();
 
 ?>

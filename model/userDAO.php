@@ -117,6 +117,35 @@ class UserDao {
         return $stmt->rowCount();
         
     }
+
+    public function createAccount($accountData) {
+        try {
+            $insert_query = "INSERT INTO employees (email, password, fname, lname, job_title, is_manager) VALUES (:email, :password, :fname, :lname, :job_title, :is_manager)";
+            $insert_address_query = "INSERT INTO addresses (employee_id) VALUES (:id)";
+
+            $db = new DB();
+            $conn = $db->createInstance();
+
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bindParam(":email", $accountData["email"]);
+            $stmt->bindParam(":password", $accountData["password"]);
+            $stmt->bindParam(":fname", $accountData["fname"]);
+            $stmt->bindParam(":lname", $accountData["lname"]);
+            $stmt->bindParam(":job_title", $accountData["job_title"]);
+            $stmt->bindParam(":is_manager", $accountData["is_manager"]);
+
+            $stmt->execute();
+            
+            $lastId = $conn->lastInsertId();
+            $addr_stmt = $conn->prepare($insert_address_query);
+            $addr_stmt->bindParam(":id", $lastId);
+            $addr_stmt->execute();
+
+            return $stmt->rowCount();
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
 }
 
 ?>

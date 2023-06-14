@@ -126,6 +126,21 @@ class IndexController {
 
         require("public/html/profile.php");
     }
+
+    public function createAccount($accountData) {
+        $userDAO = new UserDAO();
+        $result = $userDAO->createAccount($accountData);
+
+        if ($result > 0) {
+            $_SESSION["create-account-message"] = "Account successfully created.<br>Login details:<br>Email: " . $accountData["email"] . "<br>" . "Password: " . $accountData["plaintext"];
+            $_SESSION["create-account-class"] = "success-message";
+        } else {
+            $_SESSION["create-account-message"] = "Unable to create account. Please try again later.";
+            $_SESSION["create-account-class"] = "error-message";
+        }
+
+        require_once("public/html/admin.php");
+    }
 }
 
 ?>
