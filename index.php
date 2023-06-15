@@ -5,6 +5,7 @@ require_once("config/server.php");
 require_once("config/db.php");
 require_once("model/userDAO.php");
 require_once("model/requestDAO.php");
+require_once("model/eventDAO.php");
 require_once("controller/IndexController.php");
 
 session_start();
@@ -176,6 +177,19 @@ Flight::route("POST /requests", function() {
     $formData["end_date"] = $_POST["end_date"];
     $formData["description"] = ($_POST["description"] == "") ? "/" : $_POST["description"];
 
+    $start_date = $formData["start_date"];
+    $end_date = $formData["end_date"];
+    $start_datetime = DateTime::createFromFormat('Y-m-d', $start_date);
+    $end_datetime = DateTime::createFromFormat('Y-m-d', $end_date);
+    $current_date = new DateTime();
+
+    if ($start_datetime > $end_datetime || $start_datetime < $current_date) {
+        $_SESSION["create-request-message"] = "Invalid dates. Start date cannot be before today. End date cannot be before start date.";
+        $_SESSION["create-request-class"] = "error-message";
+        require_once("public/html/requests.php");
+        exit();
+    }
+
     $index = new IndexController();
     $index->createRequest($formData);
 
@@ -192,6 +206,31 @@ Flight::route("GET /update-request", function() {
 
     $index = new IndexController();
     $index->updateRequest($id, $decision);
+});
+
+Flight::route("POST /create-event", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    if ($_POST["event_date"] == "" || $_POST["name"] == "") {
+        $_SESSION["create-event-message"] = "Event date and name are required.";
+        $_SESSION["create-event-class"] = "error-message";
+        require_once("public/html/admin.php");
+        exit();
+    }
+
+    $formData = array();
+    $formData["event_date"] = $_POST["event_date"];
+    $formData["name"] = $_POST["name"];
+    $formData["description"] = ($_POST["description"] == "") ? "/" : $_POST["description"];
+    $formData["is_workday"] = (isset($_POST["is_workday"])) ? 1 : 0;
+
+    $index = new IndexController();
+    $index->createEvent($formData);
 });
 
 Flight::start();

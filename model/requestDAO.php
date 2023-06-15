@@ -58,6 +58,23 @@ class RequestDAO {
         return $results;
     }
 
+    public function getAllApprovedRequests($id) {
+        $select_query = "SELECT r.id, e.fname, e.lname, r.description, r.start_date, r.end_date, r.create_time FROM requests r JOIN employees e ON (r.employee_id = e.id) JOIN request_statuses rs ON (r.id = rs.request_id) WHERE rs.status = 'APPROVED'" . (($id == "") ? "" : " AND e.id = :id");
+        
+        $db = new DB();
+        $conn = $db->createInstance();
+
+        $stmt = $conn->prepare($select_query);
+        if ($id != "") {
+            $stmt->bindParam(":id", $id);
+        }
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     public function updateRequest($id, $decision) {
         $update_query = "UPDATE request_statuses SET status = :status, manager_id = :manager_id, updated_on = NOW() WHERE request_id = :id";
         $db = new DB();
@@ -71,6 +88,44 @@ class RequestDAO {
 
         $results = $stmt->rowCount();
         return $results;
+    }
+
+    public function arrayOfDates($start_date, $end_date) {
+        $start_date_obj = DateTime::createFromFormat('Y-m-d', $start_date);
+        $end_date_obj = DateTime::createFromFormat('Y-m-d', $end_date);
+
+        $current_date = $start_date_obj;
+        $date_objects = [];
+
+        while ($current_date <= $end_date_obj) {
+            $date_object = $current_date->format('Y-m-d');
+
+            $date_objects[] = $date_object;
+
+            $current_date->add(new DateInterval('P1D'));
+        }
+
+        return $date_objects;
+    }
+
+    public function isInDates($date, $dates) {
+        foreach ($dates as $obj) {
+            if ($date == $obj) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function numberOfDaysInAMonth($year, $month) {
+        return cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    }
+
+    public function formatMonthYear($input_month, $input_year) {
+        $date = DateTime::createFromFormat('!m Y', $input_month . ' ' . $input_year);
+        $output = $date->format('F, Y');
+        return $output;
     }
 }
 

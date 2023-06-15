@@ -13,6 +13,7 @@ body {
     --text: rgb(26, 26, 65);
     --background: rgb(238, 238, 238);
     --success: rgb(56, 156, 40);
+    --warning: rgb(203, 168, 55);
     --error: rgb(217, 105, 105);
 }
 
@@ -159,9 +160,40 @@ main {
 
 }
 
+.calendar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.month-control {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+}
+
+.month-control-link {
+    display: block;
+    border: 1px solid rgb(195, 195, 195);
+    text-decoration: none;
+    margin-left: 10px;
+    padding: 10px;
+}
+
 .success-message {
     background-color: var(--success);
     border: 1px solid green;
+}
+
+.info-message {
+    background-color: var(--text);
+    color: var(--background);
+    padding: 20px;
+}
+
+.warning-message {
+    background-color: var(--warning);
+    border: 1px solid orange;
 }
 
 .error-message {
@@ -228,6 +260,61 @@ main {
     background-color: var(--error);
 }
 
+.calendar-div {
+    display: flex; 
+    flex-direction: column;
+}
+
+.calendar-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.calendar-title {
+    text-align: left;
+}
+
+.calendar-data {
+    padding: 5px; 
+    border: 1px solid var(--text);
+    min-width: 50px;
+    height: 50px;
+    overflow: auto;
+}
+
+.dashboard-separator {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.dashboard-separator div {
+    overflow-x: auto;
+}
+
+/*.approval-graphic-div {
+}*/
+
+.table-container {
+    width: 90%;
+    overflow-x: auto;
+}
+
+.approve-link {
+    border: 1px solid var(--text);
+    padding: 2px 4px;
+    display: block;
+    text-align: center;
+    margin-left: 4px;
+}
+
+.approve-div {
+    border: none;
+    display: flex;
+    flex-direction: row;
+}
+
 .theme-div {
     display: flex;
     flex-direction: row;
@@ -277,6 +364,9 @@ main {
     display: none;
 }
 
+
+
+
 @media screen and (max-width: 768px) {
     .header-links {
         display: none;
@@ -316,6 +406,10 @@ main {
     }
 
     .profile-form {
+        flex-direction: column;
+    }
+
+    .dashboard-separator {
         flex-direction: column;
     }
 }

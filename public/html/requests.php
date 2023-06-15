@@ -6,6 +6,13 @@ if (!$isLoggedIn) {
     exit();
 }
 
+$_SESSION["active-page"] = "requests";
+$requestDAO = new RequestDAO();
+$requests = $requestDAO->getRequestsById($_SESSION["user"]["id"]);
+        
+if ($_SESSION["user"]["is_manager"] == 1) {
+    $pendingRequests = $requestDAO->getAllPendingRequests();
+}
 ?>
 
 <!DOCTYPE html>
@@ -41,10 +48,11 @@ if (!$isLoggedIn) {
             </form>
             <hr>
             <h2> My Requests </h2>
-            <div>
+            <div class="table-container">
                 <?php 
                     if ($requests != false) {
                         ?> 
+                        
                         <table class="requests-table"> 
                             <thead> 
                                 <tr>
@@ -68,6 +76,7 @@ if (!$isLoggedIn) {
                         } ?>
                             </tbody>
                         </table>
+                        
                         <?php
                     } else {
                         echo("<p>You have no requests at this moment.</p>");
@@ -75,23 +84,24 @@ if (!$isLoggedIn) {
 
                 ?>
             </div>
-            <hr>
+            
             <?php 
             
             if ($_SESSION["user"]["is_manager"] == 1) {
             ?>
+                <hr>
                 <h2>
                     Pending Requests
                 </h2>
                 <p>
                     Approve or Deny Requests
                 </p>
-                <div>
+                <div class="table-container">
                     <?php 
                         if ($pendingRequests != false) {
                         ?>
                             <?= (isset($_SESSION["update-request-message"])) ? "<p class='message-div " . $_SESSION["update-request-class"] . "'><span class='message-text'>" . $_SESSION['update-request-message'] . "</span></p>" : ""; ?>
-            
+                            
                             <table class="requests-table">
                                 <thead>
                                     <tr>
@@ -114,8 +124,10 @@ if (!$isLoggedIn) {
                                             <td><?= $pr["end_date"] ?></td>
                                             <td><?= $pr["create_time"] ?></td>
                                             <td>
-                                                <a href="<?= getFullServerPath() . "/update-request?decision=APPROVED&id=" . $pr["id"] ?>">Approve</a><br>
-                                                <a href="<?= getFullServerPath() . "/update-request?decision=DENIED&id=" . $pr["id"] ?>">Deny</a>
+                                                <div class="approve-div">
+                                                    <a class="approve-link success-message" href="<?= getFullServerPath() . "/update-request?decision=APPROVED&id=" . $pr["id"] ?>">Approve</a><br>
+                                                    <a class="approve-link error-message" href="<?= getFullServerPath() . "/update-request?decision=DENIED&id=" . $pr["id"] ?>">Deny</a>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php
@@ -123,6 +135,7 @@ if (!$isLoggedIn) {
                                     ?>
                                 </tbody>
                             </table>
+                            
                         <?php
                         } else {
                             echo("<p>No pending requests.</p>");

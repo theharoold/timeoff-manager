@@ -5,7 +5,7 @@ if (!$isLoggedIn) {
     header("Location: " . getFullServerPath() . "/");
     exit();
 }
-
+$_SESSION["active-page"] = "profile";
 ?>
 
 <!DOCTYPE html>

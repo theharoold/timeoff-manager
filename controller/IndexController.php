@@ -148,16 +148,6 @@ class IndexController {
             exit();
         }
 
-        $_SESSION["active-page"] = "requests";
-
-        $requestDAO = new RequestDAO();
-        $requests = $requestDAO->getRequestsById($_SESSION["user"]["id"]);
-        
-        if ($_SESSION["user"]["is_manager"] == 1) {
-            $pendingRequests = $requestDAO->getAllPendingRequests();
-        }
-
-
         require_once("public/html/requests.php");
     }
 
@@ -214,6 +204,21 @@ class IndexController {
         }
 
         require_once("public/html/requests.php");
+    }
+
+    public function createEvent($eventData) {
+        $eventDAO = new EventDAO();
+        $result = $eventDAO->createEvent($eventData);
+
+        if ($result > 0) {
+            $_SESSION["create-event-message"] = "Event successfully created.";
+            $_SESSION["create-event-class"] = "success-message";
+        } else {
+            $_SESSION["create-event-message"] = "Unable to create event. Please try again later.";
+            $_SESSION["create-event-class"] = "error-message";
+        } 
+        
+        require_once("public/html/admin.php");
     }
 }
 

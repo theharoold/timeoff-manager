@@ -6,6 +6,7 @@ if (!$isLoggedIn) {
     exit();
 }
 
+$_SESSION["active-page"] = "admin";
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +50,7 @@ if (!$isLoggedIn) {
             </form>
             <hr>
             <h2> Create an Event </h2>
+            <?= (isset($_SESSION["create-event-message"])) ? "<p class='message-div " . $_SESSION["create-event-class"] . "'><span class='message-text'>" . $_SESSION['create-event-message'] . "</span></p>" : ""; ?>
             <form class="profile-form" action="<?= getFullServerPath() . "/create-event" ?>" method="POST">
                 <div>
                     <label for="name">Event Name:</label>
@@ -59,6 +61,7 @@ if (!$isLoggedIn) {
                     <input type="date" name="event_date"/>
                     <label for="is_workday">Is it a Workday:</label>
                     <input type="checkbox" name="is_workday"/>
+                    <button type="submit">Create Event</button>
                 </div>                    
             </form>
         </div>
