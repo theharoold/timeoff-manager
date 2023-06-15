@@ -41,7 +41,98 @@ if (!$isLoggedIn) {
             </form>
             <hr>
             <h2> My Requests </h2>
+            <div>
+                <?php 
+                    if ($requests != false) {
+                        ?> 
+                        <table class="requests-table"> 
+                            <thead> 
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <?php
+                        foreach($requests as $request) {
+                            ?>
+                            <tr class="<?= ($request["status"] == "APPROVED") ? "request-approved" : ""; ?><?= ($request["status"] == "DENIED") ? "request-denied" : "" ?>">
+                                <td> <?= $request["start_date"] ?> </td>
+                                <td> <?= $request["end_date"] ?> </td>
+                                <td> <?= $request["description"] ?> </td>
+                                <td> <?= $request["status"] ?> </td>
+                            </tr>
+                            <?php
+                        } ?>
+                            </tbody>
+                        </table>
+                        <?php
+                    } else {
+                        echo("<p>You have no requests at this moment.</p>");
+                    }
+
+                ?>
+            </div>
+            <hr>
+            <?php 
             
+            if ($_SESSION["user"]["is_manager"] == 1) {
+            ?>
+                <h2>
+                    Pending Requests
+                </h2>
+                <p>
+                    Approve or Deny Requests
+                </p>
+                <div>
+                    <?php 
+                        if ($pendingRequests != false) {
+                        ?>
+                            <?= (isset($_SESSION["update-request-message"])) ? "<p class='message-div " . $_SESSION["update-request-class"] . "'><span class='message-text'>" . $_SESSION['update-request-message'] . "</span></p>" : ""; ?>
+            
+                            <table class="requests-table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Description</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Application Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    foreach ($pendingRequests as $pr) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $pr["fname"] . " " . $pr["lname"] ?></td>
+                                            <td><?= $pr["description"] ?></td>
+                                            <td><?= $pr["start_date"] ?></td>
+                                            <td><?= $pr["end_date"] ?></td>
+                                            <td><?= $pr["create_time"] ?></td>
+                                            <td>
+                                                <a href="<?= getFullServerPath() . "/update-request?decision=APPROVED&id=" . $pr["id"] ?>">Approve</a><br>
+                                                <a href="<?= getFullServerPath() . "/update-request?decision=DENIED&id=" . $pr["id"] ?>">Deny</a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        <?php
+                        } else {
+                            echo("<p>No pending requests.</p>");
+                        }
+                    ?>
+                </div>
+            <?php
+            }
+            
+            ?>
         </div>
     </main>
 

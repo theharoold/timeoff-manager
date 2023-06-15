@@ -27,6 +27,51 @@ class RequestDAO {
             return 0;
         }
     }
+
+    public function getRequestsById($id) {
+        $select_query = "SELECT r.start_date, r.end_date, r.description, rs.status FROM requests r JOIN request_statuses rs ON (r.id = rs.request_id)  WHERE r.employee_id = :id";
+        
+        $db = new DB();
+        $conn = $db->createInstance();
+
+        $stmt = $conn->prepare($select_query);
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        return $results;
+    
+    }
+
+    public function getAllPendingRequests() {
+        $select_query = "SELECT r.id, e.fname, e.lname, r.description, r.start_date, r.end_date, r.create_time FROM requests r JOIN employees e ON (r.employee_id = e.id) JOIN request_statuses rs ON (r.id = rs.request_id) WHERE rs.status = 'PROCESSING'";
+        
+        $db = new DB();
+        $conn = $db->createInstance();
+
+        $stmt = $conn->prepare($select_query);
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function updateRequest($id, $decision) {
+        $update_query = "UPDATE request_statuses SET status = :status, manager_id = :manager_id, updated_on = NOW() WHERE request_id = :id";
+        $db = new DB();
+        $conn = $db->createInstance();
+
+        $stmt = $conn->prepare($update_query);
+        $stmt->bindParam(":status", $decision);
+        $stmt->bindParam(":manager_id", $_SESSION["user"]["id"]);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+
+        $results = $stmt->rowCount();
+        return $results;
+    }
 }
 
 ?>

@@ -206,6 +206,28 @@ main {
     cursor: pointer;
 }
 
+.requests-table {
+    border: 1px solid var(--text);
+    border-collapse: collapse;
+    margin-bottom: 50px;
+}
+
+.requests-table * {
+    border: 1px solid var(--text);
+}
+
+.requests-table td, .requests-table th {
+    padding: 10px 30px;
+}
+
+.request-approved {
+    background-color: var(--success);
+}
+
+.request-denied {
+    background-color: var(--error);
+}
+
 .theme-div {
     display: flex;
     flex-direction: row;

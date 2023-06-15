@@ -47,6 +47,20 @@ if (!$isLoggedIn) {
                 </div>
 
             </form>
+            <hr>
+            <h2> Create an Event </h2>
+            <form class="profile-form" action="<?= getFullServerPath() . "/create-event" ?>" method="POST">
+                <div>
+                    <label for="name">Event Name:</label>
+                    <input type="text" name="name" maxlength="40"/>
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" maxlength="80"/>
+                    <label for="event_date">Event Date:</label>
+                    <input type="date" name="event_date"/>
+                    <label for="is_workday">Is it a Workday:</label>
+                    <input type="checkbox" name="is_workday"/>
+                </div>                    
+            </form>
         </div>
     </main>
 

@@ -149,6 +149,7 @@ Flight::route("POST /create-account", function() {
 
 Flight::route("GET /requests", function() {
     unset($_SESSION["create-request-message"]);
+    unset($_SESSION["update-request-message"]);
     $isLoggedIn = isset($_SESSION["isLoggedIn"]);
     $index = new IndexController();
 
@@ -178,6 +179,19 @@ Flight::route("POST /requests", function() {
     $index = new IndexController();
     $index->createRequest($formData);
 
+});
+
+Flight::route("GET /update-request", function() {
+    if (!isset($_GET["decision"]) || !isset($_GET["id"])) {
+        require_once("public/html/requests.php");
+        exit();
+    }
+
+    $decision = $_GET["decision"];
+    $id = $_GET["id"];
+
+    $index = new IndexController();
+    $index->updateRequest($id, $decision);
 });
 
 Flight::start();

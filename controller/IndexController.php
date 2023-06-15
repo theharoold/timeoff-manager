@@ -150,6 +150,14 @@ class IndexController {
 
         $_SESSION["active-page"] = "requests";
 
+        $requestDAO = new RequestDAO();
+        $requests = $requestDAO->getRequestsById($_SESSION["user"]["id"]);
+        
+        if ($_SESSION["user"]["is_manager"] == 1) {
+            $pendingRequests = $requestDAO->getAllPendingRequests();
+        }
+
+
         require_once("public/html/requests.php");
     }
 
@@ -164,6 +172,45 @@ class IndexController {
         } else {
             $_SESSION["create-request-message"] = "Unable to create request. Please try again later.";
             $_SESSION["create-request-class"] = "error-message";
+        }
+
+        $_SESSION["active-page"] = "requests";
+        $requests = $requestDAO->getRequestsById($_SESSION["user"]["id"]);
+        
+        if ($_SESSION["user"]["is_manager"] == 1) {
+            $pendingRequests = $requestDAO->getAllPendingRequests();
+        }
+
+        require_once("public/html/requests.php");
+    }
+
+    public function updateRequest($id, $decision) {
+        if (!isset($_SESSION["isLoggedIn"])) {
+            require_once("public/html/login.php");
+            exit();
+        }
+
+        if ($_SESSION["user"]["is_manager"] != 1) {
+            require_once("public/html/requests.php");
+            exit();
+        }
+
+        $requestDAO = new RequestDAO();
+        $result = $requestDAO->updateRequest($id, $decision);
+
+        if ($result > 0) {
+            $_SESSION["update-request-message"] = "Request successfully updated.";
+            $_SESSION["update-request-class"] = "success-message";
+        } else {
+            $_SESSION["update-request-message"] = "Unable to update request. Please try again later.";
+            $_SESSION["update-request-class"] = "error-message";
+        }
+
+        $_SESSION["active-page"] = "requests";
+        $requests = $requestDAO->getRequestsById($_SESSION["user"]["id"]);
+        
+        if ($_SESSION["user"]["is_manager"] == 1) {
+            $pendingRequests = $requestDAO->getAllPendingRequests();
         }
 
         require_once("public/html/requests.php");
