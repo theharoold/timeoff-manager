@@ -146,6 +146,21 @@ class UserDao {
             return 0;
         }
     }
+
+    function checkPasswordStrength($input) {
+        $uppercaseRegex = '/[A-Z]/';
+        $lowercaseRegex = '/[a-z]/';
+        $numberRegex = '/[0-9]/';
+        $specialCharRegex = '/[^A-Za-z0-9]/'; // Matches any non-alphanumeric character
+    
+        return (
+            preg_match($uppercaseRegex, $input) &&
+            preg_match($lowercaseRegex, $input) &&
+            preg_match($numberRegex, $input) &&
+            preg_match($specialCharRegex, $input)
+        );
+    }
+    
 }
 
 ?>

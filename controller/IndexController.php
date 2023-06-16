@@ -112,6 +112,14 @@ class IndexController {
 
     public function changePassword($id, $newPassword) {
         $userDAO = new UserDAO();
+        
+        if (strlen($newPassword) < 8 || !$userDAO->checkPasswordStrength($newPassword)) {
+            $_SESSION["change-password-message"] = "Password must contain at least one uppercase, one lowercase letter, one number, and one special character. It should also be at least 8 characters long.";
+            $_SESSION["change-password-class"] = "error-message";
+            require("public/html/profile.php");
+            exit();
+        }
+        
         $result = $userDAO->changePassword($id, $newPassword);
         
         if ($result > 0) {
