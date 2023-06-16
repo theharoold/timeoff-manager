@@ -46,3 +46,26 @@ CREATE TABLE events (
     is_workday INT(1) NOT NULL DEFAULT 0,
     event_date DATE NOT NULL
 );
+
+CREATE TABLE contact_forms (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT NOT NULL,
+    message VARCHAR(500) NOT NULL,
+    create_time DATETIME NOT NULL,
+    CONSTRAINT contact_forms_fk FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+CREATE TABLE surveys (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    question VARCHAR(200) NOT NULL,
+    answers VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE survey_responses (
+    employee_id INT,
+    survey_id INT,
+    answer VARCHAR(200) NOT NULL,
+    CONSTRAINT survey_responses_pk PRIMARY KEY (employee_id, survey_id),
+    CONSTRAINT survey_responses_fk_emp FOREIGN KEY (employee_id) REFERENCES employees(id),
+    CONSTRAINT survey_responses_fk_srv FOREIGN KEY (survey_id) REFERENCES surveys(id)
+);

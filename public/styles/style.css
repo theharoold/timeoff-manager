@@ -160,6 +160,13 @@ main {
 
 }
 
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
 .calendar-nav {
     display: flex;
     flex-direction: row;
@@ -226,12 +233,12 @@ main {
     min-width: 300px;
 }
 
-.login-form input, .login-button, .profile-form button, .profile-form input {
+.login-form input, .login-button, .contact-form button, .profile-form button, .profile-form input {
     width: 100%;
     height: 3em;
 }
 
-.login-button, .profile-form button {
+.login-button, .profile-form button, .contact-form button {
     color: var(--text);
     background-color: var(--background);
     border: 1px solid gray;

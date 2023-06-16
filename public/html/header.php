@@ -26,6 +26,8 @@
                 <div><a href="<?= getFullServerPath() . "/" ?>" class="header-link-a <?= $_SESSION["active-page"] == "dashboard" ? "" : "in" ?>active-link">Dashboard</a></div>
                 <div><a href="<?= getFullServerPath() . "/requests" ?>" class="header-link-a <?= $_SESSION["active-page"] == "requests" ? "" : "in" ?>active-link">Requests</a></div>
                 <div><a href="<?= getFullServerPath() . "/profile" ?>" class="header-link-a <?= $_SESSION["active-page"] == "profile" ? "" : "in" ?>active-link">Profile</a></div>
+                <div><a href="<?= getFullServerPath() . "/about-us" ?>" class="header-link-a <?= $_SESSION["active-page"] == "about-us" ? "" : "in" ?>active-link">About Us</a></div>
+                
                 <?php
                     $isManager = isset($_SESSION["isManager"]);
                     if ($isManager) {

@@ -228,6 +228,66 @@ class IndexController {
         
         require_once("public/html/admin.php");
     }
+
+    public function newContactUs($id, $message) {
+        if ($message == "") {
+            $_SESSION["create-contact-us-message"] = "Message field is required.";
+            $_SESSION["create-contact-us-class"] = "error-message";
+            require_once("public/html/about-us.php");
+            exit();
+        }
+
+        $contactDAO = new ContactDAO();
+        $result = $contactDAO->newContactUs($id, $message);
+
+        if ($result > 0) {
+            $_SESSION["create-contact-us-message"] = "Contact form successfully submitted.";
+            $_SESSION["create-contact-us-class"] = "success-message";
+        } else {
+            $_SESSION["create-contact-us-message"] = "Unable to submit contact form. Please try again later.";
+            $_SESSION["create-contact-us-class"] = "error-message";
+        } 
+        
+        require_once("public/html/about-us.php");
+    }
+
+    public function createSurvey($question, $answers) {
+        if ($question == "" || $answers == "") {
+            $_SESSION["create-survey-message"] = "All fields are required.";
+            $_SESSION["create-survey-class"] = "error-message";
+            require_once("public/html/admin.php");
+            exit();
+        }
+
+        $surveyDAO = new SurveyDAO();
+        $result = $surveyDAO->createSurvey($question, $answers);
+
+        if ($result > 0) {
+            $_SESSION["create-survey-message"] = "Survey successfully created.";
+            $_SESSION["create-survey-class"] = "success-message";
+        } else {
+            $_SESSION["create-survey-message"] = "Unable to create survey. Please try again later.";
+            $_SESSION["create-survey-class"] = "error-message";
+        } 
+        
+        require_once("public/html/admin.php");
+    }
+
+    public function createSurveyResponse($answer, $id) {
+        $surveyDAO = new SurveyDAO();
+
+        $result = $surveyDAO->createSurveyResponse($answer, $id);
+
+        if ($result > 0) {
+            $_SESSION["create-survey-response-message"] = "Survey response successfully submitted.";
+            $_SESSION["create-survey-response-class"] = "success-message";
+        } else {
+            $_SESSION["create-survey-response-message"] = "Unable to submit survey response. Please try again later.";
+            $_SESSION["create-survey-response-class"] = "error-message";
+        } 
+        
+        require_once("public/html/dashboard.php");
+    }
 }
 
 ?>

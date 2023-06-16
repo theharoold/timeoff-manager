@@ -173,7 +173,70 @@ if ($_SESSION["user"]["is_manager"] == 1) {
                         <?= (isset($_GET["msg"])) ? $_GET["msg"] : "" ?>
                     </p>
                 </div>
+
+                
             </div>
+
+            <hr style="margin-top: 50px; margin-bottom: 50px;">
+
+                <div class="surveys">
+                    <h2> Surveys </h2>
+                    <?php 
+                    
+                    $surveyDAO = new SurveyDAO();
+                    $surveys = $surveyDAO->getAllUnansweredSurveys($_SESSION["user"]["id"]);
+
+                    if ($surveys != false) {
+                        ?> 
+                        
+                        <?= (isset($_SESSION["create-survey-response-message"])) ? "<p class='message-div " . $_SESSION["create-survey-response-class"] . "'><span class='message-text'>" . $_SESSION['create-survey-response-message'] . "</span></p>" : ""; ?>
+                            
+                            <table class="requests-table">
+                                <thead>
+                                    <tr>
+                                        <th>Survey Question</th>
+                                        <th>Answers</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    foreach ($surveys as $survey) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $survey["question"] ?></td>
+                                            <?php 
+                                            
+                                            $answers = explode(",", $survey["answers"]);
+                                            for ($i = 0; $i < count($answers); $i++) {
+                                                $answers[$i] = trim($answers[$i]);
+                                            }
+                                            
+                                            ?>
+                                            <td>
+                                                <div class="approve-div">
+                                                    <?php 
+                                                    
+                                                    foreach ($answers as $answer) {
+                                                        ?>
+                                                        <a class="approve-link info-message" href="<?= getFullServerPath() . "/answer-survey?answer=". $answer ."&id=" . $survey["id"] ?>"> <?= $answer ?> </a><br>
+                                                        <?php
+                                                    }
+                                                    
+                                                    ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        
+                        <?php
+                    }
+
+                    ?>
+                </div>
         </div>
     </main>
 

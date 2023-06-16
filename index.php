@@ -3,6 +3,8 @@
 require('api/flight/Flight.php');
 require_once("config/server.php");
 require_once("config/db.php");
+require_once("model/contactDAO.php");
+require_once("model/surveyDAO.php");
 require_once("model/userDAO.php");
 require_once("model/requestDAO.php");
 require_once("model/eventDAO.php");
@@ -110,6 +112,7 @@ Flight::route("GET /admin", function() {
     }
 
     unset($_SESSION["create-account-message"]);
+    unset($_SESSION["create-survey-message"]);
 
     $_SESSION["active-page"] = "admin";
     require_once("public/html/admin.php");
@@ -231,6 +234,66 @@ Flight::route("POST /create-event", function() {
 
     $index = new IndexController();
     $index->createEvent($formData);
+});
+
+Flight::route("GET /about-us", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    unset($_SESSION["create-contact-us-message"]);
+
+    $_SESSION["active-page"] = "about-us";
+
+    require_once("public/html/about-us.php");
+});
+
+Flight::route("POST /contact-us", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    $employee_id = $_SESSION["user"]["id"];
+    $message = $_POST["message"];
+
+    $index = new IndexController();
+    $index->newContactUs($employee_id, $message);
+});
+
+Flight::route("POST /create-survey", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    $question = $_POST["question"];
+    $answers = $_POST["answers"];
+
+    $index = new IndexController();
+    $index->createSurvey($question, $answers);
+});
+
+Flight::route("GET /answer-survey", function() {
+    $isLoggedIn = isset($_SESSION["isLoggedIn"]);
+    if (!$isLoggedIn) {
+        require_once("public/html/login.php");
+        exit();
+    }
+
+    if (!isset($_GET["answer"]) || !isset($_GET["id"])) {
+        $_SESSION["create-survey-response-message"] = "Answer or survey not set.";
+        $_SESSION["create-survey-response-class"] = "error-message";
+        require_once("public/html/dashboard.php");
+        exit();
+    }
+
+    $index = new IndexController();
+    $index->createSurveyResponse($_GET["answer"], $_GET["id"]);
 });
 
 Flight::start();
