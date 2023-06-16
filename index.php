@@ -296,6 +296,26 @@ Flight::route("GET /answer-survey", function() {
     $index->createSurveyResponse($_GET["answer"], $_GET["id"]);
 });
 
+Flight::route("GET /search-responses", function() {
+    if (!isset($_GET["name"])) {
+        echo json_encode([]);
+        exit();
+    }
+    
+    $name = strtoupper(trim($_GET["name"]));
+    if ($name == "") {
+        echo json_encode([]);
+        exit();
+    }
+
+    $surveyDAO = new SurveyDAO();
+    $results = $surveyDAO->searchResponses($name);
+    if ($results == false) {
+        $results = [];
+    }
+    echo json_encode($results);
+});
+
 Flight::start();
 
 ?>

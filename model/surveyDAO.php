@@ -66,6 +66,21 @@ class surveyDAO {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public function searchResponses($name) {
+        $select_query = "SELECT s.question, sr.answer, e.fname, e.lname FROM surveys s JOIN survey_responses sr ON (s.id = sr.survey_id) JOIN employees e ON (sr.employee_id = e.id) WHERE UPPER(CONCAT(e.fname, ' ', e.lname)) LIKE :name";
+        $db = new DB();
+        $conn = $db->createInstance();
+
+        $stmt = $conn->prepare($select_query);
+        $param_name = "%" . $name . "%";
+        $stmt->bindParam(":name", $param_name);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        
+        return $results;
+    
+    }
 }
 
 ?>

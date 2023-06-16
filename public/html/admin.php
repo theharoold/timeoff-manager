@@ -138,6 +138,38 @@ $_SESSION["active-page"] = "admin";
             ?>
 
             </div>
+
+            <hr style="margin-top: 50px; margin-bottom: 50px;">
+            
+            <h2> Search for survey answers by employee's name </h2>
+
+            <div class="profile-form">
+                <div>
+                    <input id="search-input" type="text" placeholder="Enter person's name" />
+                    <ul id="search-results-ul">
+
+                    </ul>
+                </div>
+            </div>
+
+            <script>
+                const searchInput = document.getElementById("search-input");
+
+                searchInput.addEventListener("input", () => {
+                    let resultsUl = document.getElementById("search-results-ul");
+                    let str = "";
+
+                    fetch("<?= getFullServerPath() . "/search-responses?name=" ?>" + document.getElementById("search-input").value)
+                    .then(data => data.json()).then(
+                        data => {
+                            data.forEach((el) => {
+                                str += "<li>" + el["fname"] + " " + el["lname"] + " answered the question \"" + el["question"] + "\" with the following answer: \"" + el["answer"] + "\".</li>";
+                            });
+                            resultsUl.innerHTML = str;
+                        }
+                    );
+                });
+            </script>
         </div>
     </main>
 
