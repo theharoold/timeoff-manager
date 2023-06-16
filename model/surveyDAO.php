@@ -29,7 +29,8 @@ class surveyDAO {
 
     public function getAnswerCount($survey, $answer) {
         $select_query = "SELECT COUNT(*) FROM survey_responses WHERE survey_id = :survey AND answer = :answer";
-    
+        
+        $answer = trim($answer);
         $db = new DB();
         $conn = $db->createInstance();
 
