@@ -83,6 +83,12 @@
             x[slideIndex-1].style.display = "block";  
             }
             </script>
+
+            <div>
+                <a href="public/docs/seminarski.pdf"> Link za preuzimanje seminarskog rada </a>
+
+                <iframe style="width:100%;" src="public/docs/seminarski.pdf"></iframe>
+            </div>
         </div>
     </main>
 
