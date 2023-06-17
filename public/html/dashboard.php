@@ -190,7 +190,7 @@ if ($_SESSION["user"]["is_manager"] == 1) {
                         ?> 
                         
                         <?= (isset($_SESSION["create-survey-response-message"])) ? "<p class='message-div " . $_SESSION["create-survey-response-class"] . "'><span class='message-text'>" . $_SESSION['create-survey-response-message'] . "</span></p>" : ""; ?>
-                            
+                            <div class="table-container">
                             <table class="requests-table">
                                 <thead>
                                     <tr>
@@ -231,7 +231,7 @@ if ($_SESSION["user"]["is_manager"] == 1) {
                                     ?>
                                 </tbody>
                             </table>
-                        
+                            </div>
                         <?php
                     }
 

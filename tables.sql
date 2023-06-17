@@ -69,3 +69,8 @@ CREATE TABLE survey_responses (
     CONSTRAINT survey_responses_fk_emp FOREIGN KEY (employee_id) REFERENCES employees(id),
     CONSTRAINT survey_responses_fk_srv FOREIGN KEY (survey_id) REFERENCES surveys(id)
 );
+
+INSERT INTO employees (email, password, fname, lname, job_title, is_manager, create_time)
+VALUES ('hr@office.rs', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Lucia', 'Collins', 'HR Manager', 1, NOW());
+
+INSERT INTO addresses (employee_id) VALUES (1);
