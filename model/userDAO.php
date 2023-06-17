@@ -120,7 +120,7 @@ class UserDao {
 
     public function createAccount($accountData) {
         try {
-            $insert_query = "INSERT INTO employees (email, password, fname, lname, job_title, is_manager) VALUES (:email, :password, :fname, :lname, :job_title, :is_manager)";
+            $insert_query = "INSERT INTO employees (email, password, fname, lname, job_title, is_manager, create_time) VALUES (:email, :password, :fname, :lname, :job_title, :is_manager, NOW())";
             $insert_address_query = "INSERT INTO addresses (employee_id) VALUES (:id)";
 
             $db = new DB();
